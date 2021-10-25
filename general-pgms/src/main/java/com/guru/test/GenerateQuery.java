@@ -1,0 +1,16 @@
+package com.guru.test;
+
+import com.guru.util.Utility;
+
+public class GenerateQuery {
+	public static void main(String[] args) {
+//		System.out.println(Utility.generateInsertQuery("company", new String[] {
+//				"pk_id","company_contact_info","company_description","company_document","company_exposure_brd","company_ecr","company_icr","company_financial_stmt","company_financial_model","company_business_potential","company_customer","company_competitor","company_sales_cost","company_overhead_cost","stage","status","company_type","business_type","bnr_economic_sector","public_sector","shareholder_name","number_of_shares","percentage_of_shares","value_of_shares_rwf","currency","date_of_incorporation","company_address","nationality","attachments","comment","customer_id","company_name","shares_currency","action","swot","market_analysis","production_factor","business_plan","widget_meta","canvas","deleted_status","master_naics_sector_1","naics_sector_2","naics_sector_3","naics_sector_4","master_isic_sector_1","master_isic_sector_2","master_isic_sector_3","master_isic_sector_4","master_inst_sector_1","master_inst_sector_2","master_public_sector_1","master_public_sector_2","master_bnr_sector_1","master_bnr_sector_2","master_brd_fin_sectors","master_brd_fin_subsectors","company_supplier","customer_since","business_segment","rca_no","legal_status_date","no_coop_members","articles_association","coop_attachments","customer_status","tin_no","t24_customer_id","created_id","created_time","modified_id","modified_time","is_deleted","is_migrated","is_test"}));
+//		System.out.println(Utility.doubleCodedString(
+//				"pk_id, company_contact_info, company_description, company_document, company_exposure_brd, company_ecr, company_icr, company_financial_stmt, company_financial_model, company_business_potential, company_customer, company_competitor, company_sales_cost, company_overhead_cost, stage, status, company_type, business_type, bnr_economic_sector, public_sector, shareholder_name, number_of_shares, percentage_of_shares, value_of_shares_rwf, currency, date_of_incorporation, company_address, nationality, attachments, comment, customer_id, company_name, shares_currency, action, swot, market_analysis, production_factor, business_plan, widget_meta, canvas, deleted_status, master_naics_sector_1, naics_sector_2, naics_sector_3, naics_sector_4, master_isic_sector_1, master_isic_sector_2, master_isic_sector_3, master_isic_sector_4, master_inst_sector_1, master_inst_sector_2, master_public_sector_1, master_public_sector_2, master_bnr_sector_1, master_bnr_sector_2, master_brd_fin_sectors, master_brd_fin_subsectors, company_supplier, customer_since, business_segment, rca_no, legal_status_date, no_coop_members, articles_association, coop_attachments, customer_status, tin_no, t24_customer_id, created_id, created_time, modified_id, modified_time, is_deleted, is_migrated, is_test"));
+//		System.out.println(Utility.getColsWithGraveOpe(
+//				"name, code, preview, is_default, is_fixed, created_id, created_time, modified_id, modified_time, zip_file, description",
+//				"",true));
+		System.out.println(Utility.getColsSample("name, code, preview, is_default, is_fixed, created_id, created_time, modified_id, modified_time, zip_file, description", "data.getS("));
+	}
+}

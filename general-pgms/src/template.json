@@ -1,0 +1,43 @@
+{
+  "data": {
+    "version": "3.1",
+    "host": "prod-apis.zeroco.de",
+    "cacheKey": "c$no$",
+    "code": "c$no$",
+    "name": "Threshold",
+    "email": "jaggu303619@gmail.com",
+    "phone": "8886404002",
+    "phoneDetails": {
+      "isd": "+91",
+      "country": "IN",
+      "no": "8886404002"
+    },
+    "client_admin": {
+      "name": "Jagadeesh",
+      "email": "jaggu303619@gmail.com",
+      "phone": "8886404002"
+    },
+    "user_admin": {
+      "name": "Jagadeesh",
+      "email": "jaggu303619@gmail.com",
+      "phone": "8886404002"
+    },
+    "contact_name": "Jagadeesh",
+    "contact_email": "jaggu303619@gmail.com",
+    "contact_phone": "8886404002",
+    "client_secret": "770204",
+    "client_authorization": "577135",
+    "db_type": "MYSQL",
+    "country": "IN",
+    "status": "Active",
+    "env": "dev",
+    "db_conn_config": {
+      "db_type": "mysql",
+      "db_name": "zc_c$no$"
+    },
+    "clientDb": "zc_c$no$",
+    "clientAdminDb": "zc_c$no$_admin",
+    "success": true,
+    "zcServerDateTime": "2020-12-16 17:11:00"
+  }
+}
