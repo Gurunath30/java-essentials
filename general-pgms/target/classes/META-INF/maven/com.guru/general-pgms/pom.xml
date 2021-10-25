@@ -93,6 +93,20 @@
 		<version>10.2.6</version>
 	</dependency>
 	
+	<dependency>
+		<groupId>com.google.zxing</groupId>
+		<artifactId>core</artifactId>
+		<version>3.3.3</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.yaml</groupId>
+		<artifactId>snakeyaml</artifactId>
+		<version>1.26</version>
+	</dependency>
+	
+	
+	
 		
 	</dependencies>
 </project>
