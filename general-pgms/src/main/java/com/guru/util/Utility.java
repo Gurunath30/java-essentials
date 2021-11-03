@@ -1239,6 +1239,25 @@ public class Utility {
 		workbook.close();
 	}
 	
+	/**
+	 * Replacing wild cards in the given input string
+	 * @param ip
+	 * @return String
+	 */
+	public static List<String> wildCardReplmt(String ip) {
+		List<String> list = new ArrayList<String>();
+		int startIndex = 0, endIndex=0;
+		while(true) {
+			startIndex = ip.indexOf("{{", startIndex);
+			endIndex = ip.indexOf("}}", endIndex);
+			list.add(ip.substring(startIndex+2,endIndex));
+			startIndex=endIndex;
+			endIndex+=2;
+			if(ip.indexOf("{{", startIndex)<0) break;
+		}
+		return list;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		System.out.println(fileDataToStrArr("F:\\TSS-Works\\dump\\narmdata.txt"));
 	}
