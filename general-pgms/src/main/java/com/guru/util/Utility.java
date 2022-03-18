@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
@@ -49,7 +50,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utility {
@@ -108,7 +108,7 @@ public class Utility {
 	 * @param Object
 	 * @return boolean
 	 */
-	public static boolean haveData(Object obj) {
+	public static boolean hasData(Object obj) {
 		return !isBlank(obj);
 	}
 
@@ -127,7 +127,7 @@ public class Utility {
 			throws Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + portNumber + "/" + schema
-				+ "?useUnicode=true&characterEncoding=UTF-8" + "&rewriteBatchedStatements=true", userName, password);
+				+ "?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8" + "&rewriteBatchedStatements=true", userName, password);
 		connection.setAutoCommit(false);
 		return connection;
 	}
@@ -203,7 +203,7 @@ public class Utility {
 		preStmt.close();
 		return result;
 	}
-
+	
 	/**
 	 * Returns the db record as a map based on query if it exists
 	 * 
@@ -249,6 +249,16 @@ public class Utility {
 		return listOfRec;
 	}
 
+	public static boolean getResultset(Connection connection, String table) throws SQLException {
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM "+table);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		ResultSetMetaData metadata = resultSet.getMetaData();
+		for (int i=1; i<=metadata.getColumnCount(); i++) {
+			  if("is_deleted".equalsIgnoreCase(metadata.getColumnName(i))) return true;
+			}
+		return false;
+	}
+	
 	/**
 	 * Submits a batch of commands to the database for execution andif all commands
 	 * execute successfully, returns an array of update counts.The int elements of
@@ -272,6 +282,23 @@ public class Utility {
 		}
 		preStmt.executeBatch();
 		preStmt.close();
+	}
+	
+	/**
+	 * This method either batch updates or deletes the record based on query
+	 * 
+	 * @param conn
+	 * @param sql
+	 * @param args
+	 * @return int
+	 * @throws SQLException
+	 */
+	public static int[] batchUpdate(Connection conn, String queries) throws SQLException {
+		PreparedStatement preStmt = conn.prepareStatement(queries);
+		preStmt.addBatch();
+		int[] result = preStmt.executeBatch();
+		preStmt.close();
+		return result;
 	}
 
 	/**
@@ -387,7 +414,7 @@ public class Utility {
 		String op = "";
 		String plcHldr = "";
 		for (String col : values) {
-			if (haveData(tabDotCol)) {
+			if (hasData(tabDotCol)) {
 				op = op + tabDotCol + "." + encloseGrave(col) + COMMA;
 			}else {
 				op = op + encloseGrave(col) + COMMA;
@@ -1126,7 +1153,7 @@ public class Utility {
 				count++;
 				if (count == lineNo) {
 					status = true;
-					if (haveData(line)) {
+					if (hasData(line)) {
 						writer.write(line + "\n");
 					}
 				} else {
@@ -1258,7 +1285,56 @@ public class Utility {
 		return list;
 	}
 	
+	/**
+	 * Returns an embedded youtube URL
+	 * @param url
+	 * @return
+	 */
+	public static String embededYoutubeUrl(String url) {
+		if(isBlank(url)) return null;
+		String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url); //url is youtube url for which you want to extract the id.
+        if (matcher.find()) {
+             return "https://www.youtube.com/embed/"+(String)matcher.group();
+        }
+		return null;
+	}
+	
+	/**
+	 * Given comma separated string converts to List<String> by removing empty values
+	 * @param commaSepStr
+	 * @return List<String>
+	 */
+	public static List<String> commaSepStrToList(String commaSepStr) {
+		String[] ar = commaSepStr.split(",");
+		List<String> list = new ArrayList<String>();
+		for (String val : ar) {
+			if (Utility.hasData(val)) list.add(val);
+		}
+		return list;
+	}
+	
+	/**
+	 * Zc Scripting made easy by the following method
+	 * caution: Sit back with popcorn while executing this method
+	 * 
+	 * @param 
+	 * @return
+	 * @throws Exception 
+	 */
+	public static boolean scripting(Connection conn,String schema) throws Exception {
+		List<Map<String, Object>> trunTables = getMapList(conn, "SELECT Table_name AS TablesName FROM information_schema.tables WHERE table_schema = "+schema+" AND Table_name LIKE '%_audit%' OR Table_name LIKE '%_log%' OR Table_name LIKE '%_queue%';");
+		String query = "";
+		for(Map<String, Object> map:trunTables) {
+			query+="TRUNCATE "+GRAVE+map.get("TABLE_NAME")+GRAVE+";\n";
+		}
+		execute(conn, query);
+		return true;
+	}
+	
 	public static void main(String[] args) throws Exception {
-		System.out.println(fileDataToStrArr("F:\\TSS-Works\\dump\\narmdata.txt"));
+		//System.out.println(modifyData("Hey there", 2, new File("F:\\TSS-Works\\codefiles\\RoomType.csv")));
+	System.out.println(embededYoutubeUrl("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/0LhBvp8qpro\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-ins-picture\" allowfullscreen></iframe>s"));
 	}
 }

@@ -106,6 +106,6 @@ public class PwdEncryptDecrypt {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(decrypt("JL0nLMNx6KNzQbClcVAXLQ=="));
+		System.out.println(decrypt("x5/ip64m6e0="));
 	}
 }
